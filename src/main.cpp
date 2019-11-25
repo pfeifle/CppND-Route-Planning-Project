@@ -1,6 +1,7 @@
 #include <optional>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <string>
 #include <io2d.h>
@@ -29,6 +30,9 @@ static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
 
 int main(int argc, const char **argv)
 {    
+    float start_x=10.0, start_y=10.0, end_x=90.0, end_y=90.0;
+    std::string s_start_x="",s_start_y="", s_end_x="", s_end_y="";
+    char c;
     std::string osm_data_file = "";
     if( argc > 1 ) {
         for( int i = 1; i < argc; ++i )
@@ -55,12 +59,24 @@ int main(int argc, const char **argv)
     // TODO 1: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
     // user input for these values using std::cin. Pass the user input to the
     // RoutePlanner object below in place of 10, 10, 90, 90.
-
+    std::cout <<"\nPlease enter the x coordinate of the start point as value between 0 and 100: ";
+    std::cin >> s_start_x;  
+    start_x=stof(s_start_x);  
+    std::cout <<"\nPlease enter the y coordinate of the start point as value between 0 and 100: ";
+    std::cin >> s_start_y;  
+    start_y=stof(s_start_y);      
+    std::cout <<"\nPlease enter the x coordinate of the end point as value between 0 and 100: ";
+    std::cin >> s_end_x;  
+    end_x=stof(s_end_x);      
+    std::cout <<"\nPlease enter the y coordinate of the end point as value between 0 and 100: ";
+    std::cin >> s_end_y;
+    end_y=stof(s_end_y);  
     // Build Model.
     RouteModel model{osm_data};
 
     // Create RoutePlanner object and perform A* search.
-    RoutePlanner route_planner{model, 10, 10, 90, 90};
+    //RoutePlanner route_planner{model, 10, 10, 90, 90};
+    RoutePlanner route_planner{model, start_x, start_y, end_x, end_y};
     route_planner.AStarSearch();
 
     std::cout << "Distance: " << route_planner.GetDistance() << " meters. \n";
@@ -77,3 +93,4 @@ int main(int argc, const char **argv)
     });
     display.begin_show();
 }
+
